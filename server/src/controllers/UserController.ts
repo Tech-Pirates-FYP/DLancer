@@ -24,7 +24,7 @@ export const authenticate = async (req: Request, res: Response): Promise<any | u
     const token = jwt.sign({ walletAddress, role }, SECRET_KEY, {
       expiresIn: "120h",
     });
-    console.log("token: ", token)
+    // console.log("token: ", token)
   
     res.cookie("authtoken", token, {
       httpOnly: true,   
