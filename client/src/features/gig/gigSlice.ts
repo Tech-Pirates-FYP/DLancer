@@ -1,20 +1,35 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Gig } from "./types";
+import { Gig, Proposal } from "./types";
+import { setFreelancerAddress } from "../proposal/proposalSlice";
 
-const initialState: Gig = {
-    walletAddress: "",
-    title: "",
-    description: "",
-    category: "",
-    deliveryTime: 0,
-    revisions: 0,
-    features: [],
-    price: 0,
-    shortDesc: "",
-    images: [],
-    freelancerAddress: undefined,
-    proposals: [],
-    status: "pending",
+interface GigState {
+    gig: Gig;
+    proposal: Proposal;
+}
+
+const initialState: GigState = {
+    gig: {
+        walletAddress: "",
+        title: "",
+        description: "",
+        category: "",
+        deliveryTime: 0,
+        revisions: 0,
+        features: [],
+        price: 0,
+        shortDesc: "",
+        createdAt: undefined,
+        images: [],
+        freelancerAddress: undefined,
+        proposals: [], 
+        status: "pending",
+    },
+    proposal: {
+        _id: "", 
+        freelancerAddress: "",
+        file: "",
+        status: "pending", 
+    }
 };
 
 const gigSlice = createSlice({
@@ -22,11 +37,31 @@ const gigSlice = createSlice({
     initialState,
     reducers: {
         setGigData: (state, action: PayloadAction<Partial<Gig>>) => {
-            return { ...state, ...action.payload };
+            state.gig = { ...state.gig, ...action.payload };
         },
-        resetGigData: () => initialState,
-    }
-})
 
-export const { setGigData, resetGigData } = gigSlice.actions;
+        resetGigData: (state) => {
+            state.gig = { ...initialState.gig }; 
+        },
+
+        setFile: (state, action) => {
+            state.proposal.file = action.payload;
+        },
+
+        setProposalFreelancerAddress: (state, action) => {
+            state.proposal.freelancerAddress = action.payload;
+        },
+
+        setStatus:(state, action) => {
+            state.proposal.status = action.payload;
+        },
+
+        resetProposalForm: (state) => {
+            state.proposal = { ...initialState.proposal }; 
+        },
+
+    }
+});
+
+export const { setGigData, resetGigData, setFile, setProposalFreelancerAddress, setStatus, resetProposalForm } = gigSlice.actions;
 export default gigSlice.reducer;

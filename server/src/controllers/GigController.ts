@@ -48,7 +48,7 @@ export const getGigData = async (req: Request, res: Response): Promise<any | und
     }
 };
 
-export const getAllGigs = async (req: Request, res: Response): Promise<void> => {
+export const getGigsByWallet = async (req: Request, res: Response): Promise<void> => {
     const { walletAddress } = req.params; 
 
     if (!walletAddress || typeof walletAddress !== "string") {
@@ -68,6 +68,19 @@ export const getAllGigs = async (req: Request, res: Response): Promise<void> => 
     } catch (error: any) {
         console.error("Error fetching gigs:", error);
         res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+export const getAllGigData = async (req: Request, res: Response): Promise<any | undefined> => {
+    try {
+        const gig = await Gig.find();
+        if (!gig) {
+            return res.status(404).json({ message: "Gig not found" });
+        }
+        return res.status(200).json(gig);
+    } catch (error: any) {
+        return res.status(400).json({ error: error.message });
     }
 };
 
@@ -110,7 +123,7 @@ export const submitProposal = async (req: Request, res: Response): Promise<any |
         }
 
         const proposal = { freelancerAddress, file, status: "pending" };
-        gig.proposals.push(proposal as IProposal);
+        gig.proposals?.push(proposal as IProposal);
 
         await gig.save();
         return res.status(200).json({ message: "Proposal submitted successfully", proposal });
@@ -129,7 +142,7 @@ export const acceptProposal = async (req: Request, res: Response): Promise<any |
             return res.status(404).json({ message: "Gig not found" });
         }
 
-        const proposal = gig.proposals.find((proposal) => (proposal)._id.toString() === proposalId);
+        const proposal = gig.proposals?.find((proposal) => (proposal)._id.toString() === proposalId);
         if (!proposal) {
             return res.status(404).json({ message: "Proposal not found" });
         }
@@ -137,7 +150,7 @@ export const acceptProposal = async (req: Request, res: Response): Promise<any |
         proposal.status = "accepted";
         gig.freelancerAddress = proposal.freelancerAddress;
 
-        gig.proposals.forEach((p) => {
+        gig.proposals?.forEach((p) => {
             if ((p as IProposal)._id.toString() !== proposalId) {
                 p.status = "rejected";
             }

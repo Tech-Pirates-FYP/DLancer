@@ -4,10 +4,13 @@ import FreelancerProfile from "./pages/FreelancerProfile";
 import CreateGig from "./pages/CreateGig";
 import Landing from "./pages/Landing";
 import ClientDashboard from "./pages/ClientDashboard";
+import AllGigsPage from "./pages/AllGigsPage";
+import GigDetails from "./components/GigDetails";
+import ProposalForm from "./components/ProposalForm";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 ">
       <Navbar />
 
       <Routes>
@@ -15,6 +18,9 @@ function App() {
         <Route path="/profile" element={<FreelancerProfile />} />
         <Route path="/create-gig" element={<CreateGig />} />
         <Route path="/client-dashboard" element={<ClientDashboard />} />
+        <Route path="/allgigs" element={<AllGigsPage />} />
+        <Route path="/gig/:gigId" element={<GigDetails />} />
+        <Route path="/proposal-form" element={<ProposalForm />} />
       </Routes>
       
     </div>

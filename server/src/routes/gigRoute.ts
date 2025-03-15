@@ -1,13 +1,14 @@
 import express from "express"
-import { acceptProposal, addFreelancerAddress, addGig, editGig, getAllGigs, getGigData, getProposals, getUserAuthGigs, submitProposal } from "../controllers/GigController";
+import { acceptProposal, addFreelancerAddress, addGig, editGig, getGigsByWallet, getGigData, getProposals, getUserAuthGigs, submitProposal, getAllGigData } from "../controllers/GigController";
 import { authTokenVerification } from "../middleware/authMiddleware";
 
 const router = express.Router()
 
 router.get("/:gigId", getGigData);
-router.get("/client/:walletAddress", getAllGigs);
+router.get("/client/:walletAddress", getGigsByWallet);
+router.get("/", getAllGigData);
 
-router.use(authTokenVerification)
+// router.use(authTokenVerification)
 
 router.post('/addGig', addGig)
 router.put("/add-freelancer", addFreelancerAddress);
@@ -16,7 +17,7 @@ router.put("/edit/:gigId", editGig);
 
 
 // router.post("/:gigId/proposals", upload.single("file"), addProposal);
-router.post("/:gigId/proposals",  submitProposal);
+router.post("/:gigId/submitProposal",  submitProposal);
 router.patch("/:gigId/proposals/:proposalId/accept", acceptProposal);
 router.get("/:gigId/proposals", getProposals);
 

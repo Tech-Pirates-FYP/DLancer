@@ -1,4 +1,4 @@
-import { Menu, Search, Bell, User } from 'lucide-react';
+import { Menu, Search, User } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useConnectWalletMutation } from '../features/auth/authAPI';
@@ -20,6 +20,7 @@ export default function Navbar() {
 
   const navigateToHome = () => {
     navigate('/');
+    setIsClientDashboard(false);
   }
 
   const navigateToCreateGig = () => {
@@ -66,9 +67,14 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <button onClick={switchToClient}>
-              Switch to client
-            </button>
+            {
+              !isClientDashboard && (
+                <button onClick={switchToClient}>
+                  Switch to client
+                </button>
+              ) 
+            }
+            
 
             {
               isClientDashboard ? (
@@ -86,9 +92,6 @@ export default function Navbar() {
               }
             </button>
 
-            <button className="p-2 rounded-full text-gray-400 hover:text-gray-500">
-              <Bell className="h-6 w-6" />
-            </button>
             <button className="p-2 rounded-full text-gray-400 hover:text-gray-500">
               <User className="h-6 w-6" />
             </button>

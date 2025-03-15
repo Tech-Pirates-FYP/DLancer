@@ -33,9 +33,9 @@ const FeaturedJobs = () => {
     <section className="gap_section mb-12">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Featured Jobs</h2>
-        <button className="text-indigo-600 hover:text-indigo-500 font-medium">
+        {/* <button className="text-indigo-600 hover:text-indigo-500 font-medium">
           View all
-        </button>
+        </button> */}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {featuredJobs.map((job) => (

@@ -15,6 +15,7 @@ export interface Gig {
     features: string[];
     price: number;
     shortDesc?: string;
+    createdAt?: Date;
     images?: string[];
     freelancerAddress?: string;
     proposals?: Proposal[];

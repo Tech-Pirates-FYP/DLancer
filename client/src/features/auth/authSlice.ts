@@ -17,11 +17,14 @@ const authSlice = createSlice({
     setWalletAddress: (state, action: PayloadAction<string>) => {
       state.walletAddress = action.payload;
     },
+    logout: (state, action) => {
+      state.walletAddress = null;
+    },
     setRole: (state, action: PayloadAction<"freelancer" | "client">) => {
       state.role = action.payload;
     },
   },
 });
 
-export const { setWalletAddress, setRole } = authSlice.actions;
+export const { setWalletAddress, logout, setRole } = authSlice.actions;
 export default authSlice.reducer;
