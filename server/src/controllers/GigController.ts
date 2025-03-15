@@ -148,6 +148,7 @@ export const acceptProposal = async (req: Request, res: Response): Promise<any |
         }
 
         proposal.status = "accepted";
+        gig.status = "assigned";
         gig.freelancerAddress = proposal.freelancerAddress;
 
         gig.proposals?.forEach((p) => {

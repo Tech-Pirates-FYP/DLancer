@@ -31,12 +31,16 @@ export const gigAPI = createApi ({
               url: `/${gigId}/submitProposal`,
               method: "POST",
               body: { freelancerAddress, file },
-              headers: {
-                  "Content-Type": "application/json",
-              },
           }),
         }),
+
+        acceptProposal: builder.mutation<Proposal, {gigId: string; proposalId: string}>({
+          query: ({ gigId, proposalId }) => ({
+            url: `/${gigId}/proposals/${proposalId}/accept`,
+            method: "PATCH",
+          }),
+        })
     }),
 })
 
-export const { useGetGigsByWalletQuery, useCreateGigMutation, useGetGigByIdQuery, useGetAllGigsQuery, useSubmitProposalMutation  } = gigAPI;
+export const { useGetGigsByWalletQuery, useCreateGigMutation, useGetGigByIdQuery, useGetAllGigsQuery, useSubmitProposalMutation, useAcceptProposalMutation  } = gigAPI;
