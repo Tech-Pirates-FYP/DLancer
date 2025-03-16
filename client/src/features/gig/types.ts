@@ -21,3 +21,13 @@ export interface Gig {
     proposals?: Proposal[];
     status: 'pending' | 'assigned' | 'completed';
   }
+
+export interface FreelancerProposal {
+    proposalId: string,
+    gigTitle: string,
+    gigCategory: string,
+    gigPrice: number,
+    clientAddress: string,
+    status: "pending" | "accepted" | "rejected";
+    file: string
+} 

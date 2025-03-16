@@ -1,5 +1,5 @@
 import express from "express"
-import { acceptProposal, addFreelancerAddress, addGig, editGig, getGigsByWallet, getGigData, getProposals, getUserAuthGigs, submitProposal, getAllGigData } from "../controllers/GigController";
+import { acceptProposal, addFreelancerAddress, addGig, editGig, getGigsByWallet, getGigData, getProposals, getUserAuthGigs, submitProposal, getAllGigData, getProposalsByWalletAddress } from "../controllers/GigController";
 import { authTokenVerification } from "../middleware/authMiddleware";
 
 const router = express.Router()
@@ -20,6 +20,7 @@ router.put("/edit/:gigId", editGig);
 router.post("/:gigId/submitProposal",  submitProposal);
 router.patch("/:gigId/proposals/:proposalId/accept", acceptProposal);
 router.get("/:gigId/proposals", getProposals);
+router.get("/proposals/:walletAddress", getProposalsByWalletAddress)
 
 
 export default router;

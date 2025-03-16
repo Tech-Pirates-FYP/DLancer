@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Gig, Proposal } from "./types";
-import { setFreelancerAddress } from "../proposal/proposalSlice";
 
 interface GigState {
     gig: Gig;

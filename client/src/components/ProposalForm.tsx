@@ -28,7 +28,17 @@ export default function ProposalForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await submitProposal({ gigId: gigId as string, freelancerAddress: proposal.freelancerAddress, file: proposal.file });     
+        await submitProposal({ gigId: gigId as string, freelancerAddress: proposal.freelancerAddress, file: proposal.file }); 
+        toast.success("Successfully request sent!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          })    
         setTimeout(() => {
             navigate('/');
         }, 3000)
@@ -42,16 +52,6 @@ export default function ProposalForm() {
 
     return (
         <form onSubmit={handleSubmit} className="p-4 border rounded-lg">
-            {isSuccess && toast.success("Successfully request sent!", {
-            position: "top-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          })}
             <ToastContainer aria-label={undefined} />
             
             <Label>File URL</Label>

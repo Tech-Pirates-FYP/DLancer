@@ -12,12 +12,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/features/store";
 import { resetGigData, setGigData } from "@/features/gig/gigSlice";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 interface GigFormProps {
   onSuccess: (status: boolean) => void;
 }
 
-export default function GigForm({ onSuccess }: GigFormProps) {
+export default function GigForm() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +43,16 @@ export default function GigForm({ onSuccess }: GigFormProps) {
     e.preventDefault();
     try {
       await createGig(gigData).unwrap();
-      onSuccess(true);
+      toast.success("Successfully posted gig!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
       dispatch(resetGigData());
       setTimeout(() => {
         navigate('/client-dashboard');
@@ -55,6 +65,7 @@ export default function GigForm({ onSuccess }: GigFormProps) {
 
   return (
     <Card className="p-6">
+      <ToastContainer aria-label={undefined} />
       <form className="space-y-6">
         <div>
           <Label>Project Title</Label>

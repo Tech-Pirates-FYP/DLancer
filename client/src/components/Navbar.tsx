@@ -34,6 +34,10 @@ export default function Navbar() {
     }
   };
 
+  const switchToFreelancerDashboard = () => {
+    navigate('/freelancer-dashboard');
+  }
+
   const address = walletAddress? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` :" ";
 
   useEffect(() => {
@@ -74,6 +78,10 @@ export default function Navbar() {
                 </button>
               ) 
             }
+
+            <button onClick={switchToFreelancerDashboard}>
+              Freelancer Dashboard
+            </button>
             
 
             {

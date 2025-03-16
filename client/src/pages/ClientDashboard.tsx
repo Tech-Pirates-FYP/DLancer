@@ -85,19 +85,23 @@ export default function ClientDashboard() {
               <TableCell>
                 {gig.proposals?.map((prop, index) => (
                   <div key={index} className="flex items-center justify-between mb-2">
-                    <span>
-                      {`${prop.file}`}
-                    </span>
+                    <a href={prop.file} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                      View File
+                    </a>
                   </div>
                 ))}
               </TableCell>
+
+              <TableCell>
+              </TableCell>
+
               <TableCell>
                 {gig.proposals?.map((prop, index) => (
                   <div key={index} className="flex items-center justify-between mb-2">
                     <span>
                       {`${prop.freelancerAddress.slice(0, 6)}...${prop.freelancerAddress.slice(-4)}`}
                     </span>
-                    {prop.status !== "accepted" && (
+                    {prop.status !== "accepted" && gig.status === 'pending' && (
                       <Button className="ml-2" onClick={() => onAcceptClick(gig._id, prop._id)}>
                         Accept
                       </Button>

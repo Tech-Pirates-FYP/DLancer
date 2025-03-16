@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Gig, Proposal } from "./types";
+import { FreelancerProposal, Gig, Proposal } from "./types";
 
 export const gigAPI = createApi ({
     reducerPath: "gigAPI",
@@ -39,8 +39,12 @@ export const gigAPI = createApi ({
             url: `/${gigId}/proposals/${proposalId}/accept`,
             method: "PATCH",
           }),
+        }),
+
+        getFreelancerProposals: builder.query<FreelancerProposal, string> ({
+          query: (walletAddress) => `/proposals/${walletAddress}`
         })
     }),
 })
 
-export const { useGetGigsByWalletQuery, useCreateGigMutation, useGetGigByIdQuery, useGetAllGigsQuery, useSubmitProposalMutation, useAcceptProposalMutation  } = gigAPI;
+export const { useGetGigsByWalletQuery, useCreateGigMutation, useGetGigByIdQuery, useGetAllGigsQuery, useSubmitProposalMutation, useAcceptProposalMutation, useGetFreelancerProposalsQuery  } = gigAPI;

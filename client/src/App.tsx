@@ -7,6 +7,7 @@ import ClientDashboard from "./pages/ClientDashboard";
 import AllGigsPage from "./pages/AllGigsPage";
 import GigDetails from "./components/GigDetails";
 import ProposalForm from "./components/ProposalForm";
+import FreelancerDashboard from "./pages/FreelancerDashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/profile" element={<FreelancerProfile />} />
         <Route path="/create-gig" element={<CreateGig />} />
         <Route path="/client-dashboard" element={<ClientDashboard />} />
+        <Route path="/freelancer-dashboard" element={<FreelancerDashboard />} />
         <Route path="/allgigs" element={<AllGigsPage />} />
         <Route path="/gig/:gigId" element={<GigDetails />} />
         <Route path="/proposal-form" element={<ProposalForm />} />

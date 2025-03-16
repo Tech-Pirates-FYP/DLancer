@@ -178,3 +178,33 @@ export const getProposals = async (req: Request, res: Response): Promise<any | u
         return res.status(500).json({ error: error.message });
     }
 };
+
+export const getProposalsByWalletAddress = async (req: Request, res: Response): Promise<any | undefined> => {
+    const { walletAddress } = req.params;
+    try {
+        const gigs = await Gig.find({ "proposals.freelancerAddress" : walletAddress });
+        // console.log("gigs: ",gigs)
+
+        const proposals = gigs.flatMap(gig => {
+            return (gig.proposals ?? []) 
+                .filter((proposal: any) => proposal.freelancerAddress === walletAddress)
+                .map((proposal: any) => ({
+                    proposalId: proposal._id,
+                    gigTitle: gig.title,
+                    gigCategory: gig.category,
+                    gigPrice: gig.price,
+                    clientAddress: gig.walletAddress,
+                    status: gig.freelancerAddress === walletAddress ? "accepted" : proposal.status,
+                    file: proposal.file
+                }));
+        });
+        if (proposals.length === 0) {
+            return res.status(404).json({ message: "No proposals found for this freelancer" });
+        }
+
+        res.status(200).json(proposals);
+    } catch (error: any) {
+        console.error("Error fetching freelancer proposals:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
