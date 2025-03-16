@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useConnectWalletMutation } from '../features/auth/authAPI';
 import { setWalletAddress } from '../features/auth/authSlice';
 import { useEffect, useState } from 'react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function Navbar() {
 
@@ -37,8 +38,6 @@ export default function Navbar() {
   const switchToFreelancerDashboard = () => {
     navigate('/freelancer-dashboard');
   }
-
-  const address = walletAddress? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` :" ";
 
   useEffect(() => {
     connectWallet();
@@ -94,11 +93,20 @@ export default function Navbar() {
               )
             }
 
-            <button onClick={handleConnect}>
-              {
-                walletAddress? address :  'Connect'
-              }
-            </button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button onClick={handleConnect} >
+                    {walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "Connect"}
+                  </button>
+                </TooltipTrigger>
+                {walletAddress && (
+                  <TooltipContent>
+                    <p>{walletAddress}</p>
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
 
             <button className="p-2 rounded-full text-gray-400 hover:text-gray-500">
               <User className="h-6 w-6" />

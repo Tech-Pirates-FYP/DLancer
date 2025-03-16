@@ -93,9 +93,6 @@ export default function ClientDashboard() {
               </TableCell>
 
               <TableCell>
-              </TableCell>
-
-              <TableCell>
                 {gig.proposals?.map((prop, index) => (
                   <div key={index} className="flex items-center justify-between mb-2">
                     <span>
