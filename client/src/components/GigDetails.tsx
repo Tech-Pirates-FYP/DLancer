@@ -16,23 +16,33 @@ export default function GigDetails() {
   if (error) return <p>Error fetching gig details</p>;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="gap_section mx-auto px-4 py-8">
       <Card className="p-6 shadow-lg">
-        <h1 className="text-2xl font-bold">{gig?.title}</h1>
-        <p className="text-gray-600 text-sm">{gig?.category}</p>
-        <div className="flex items-center gap-2 text-lg font-semibold mt-2">
-          <DollarSign className="w-5 h-5 text-green-600" />
-          <span>${gig?.price}</span>
-        </div>
-        <p className="mt-4 text-gray-700">{gig?.description}</p>
-        
-        <div className="mt-6">
-          <Button variant="default" onClick={()=>setApplyForGig(true)}>Apply for Gig</Button>
-        </div>
+        <div className="flex justify-between">
 
-        {
-          applyForGig && <ProposalForm />
-        }
+          <div>
+            <h1 className="text-2xl font-bold">{gig?.title}</h1>
+            <p className="text-gray-600 text-sm">{gig?.category}</p>
+            <div className="flex items-center gap-2 text-lg font-semibold mt-2">
+              <DollarSign className="w-5 h-5 text-green-600" />
+              <span>${gig?.price}</span>
+            </div>
+            <p className="mt-4 text-gray-700">{gig?.description}</p>
+            
+            <div className="mt-6">
+              <Button variant="default" onClick={()=>setApplyForGig(true)}>Apply for Gig</Button>
+            </div>
+
+            {
+              applyForGig && <ProposalForm />
+            }
+          </div>
+
+          <div>
+            <img src={gig.images[0]} alt="Gig Preview" className="w-full h-full object-cover mt-2 rounded-lg"/>
+          </div>
+
+        </div>
 
       </Card>
     </div>

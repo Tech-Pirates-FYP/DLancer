@@ -7,6 +7,7 @@ export const addGig = async (req: Request, res: Response) => {
         const savedGig = await gig.save();
         res.status(201).json(savedGig);
     } catch (error: any) {
+        console.log("error: ", error.message)
         res.status(400).json({ error: error.message })
     }
 }

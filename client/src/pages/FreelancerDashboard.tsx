@@ -12,12 +12,17 @@ export default function FreelancerDashboard() {
     skip: !walletAddress,
   });
 
+  if (!Array.isArray(proposals) || proposals.length === 0) {
+    return <div>No proposals found</div>;
+  }
+
   console.log("proposals: ", proposals)
 
   if (isLoading) return <p>Loading proposals...</p>;
   if (error) return <p>Error fetching proposals</p>;
 
   return (
+    <div className="gap_section">
     <Card className="p-6">
       <h2 className="text-2xl font-bold mb-6">Freelancer Dashboard</h2>
       <Table>
@@ -58,5 +63,6 @@ export default function FreelancerDashboard() {
         </TableBody>
       </Table>
     </Card>
+    </div>
   );
 }

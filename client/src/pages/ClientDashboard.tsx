@@ -6,9 +6,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ClientDashboard() {
+
+  const navigate = useNavigate();
 
   const walletAddress = useSelector((state: RootState) => state.auth.walletAddress);
   console.log("walletAddress: ", walletAddress);
@@ -16,6 +19,10 @@ export default function ClientDashboard() {
   const { data: gigs, error, isLoading } = useGetGigsByWalletQuery(walletAddress!, {
     skip: !walletAddress,
   });
+
+  const navigateToCreateGig = () => {
+    navigate('/create-gig');
+  }
 
   const [ acceptProposal, { isSuccess } ] = useAcceptProposalMutation();
 
@@ -40,15 +47,24 @@ export default function ClientDashboard() {
     }
   };
 
+  // if( gigs?.length === 0) {
+  //   return <p>No Gigs created</p>
+  // }
   if (isLoading) return <p>Loading gigs...</p>;
-  if (error) return <p>Error fetching gigs</p>;
+  // if (error) return <p>Error fetching gigs</p>;
 
 
   return (
+    <div className="gap_section">
     <Card className="p-6">
       <ToastContainer aria-label={undefined} />
 
-      <h2 className="text-2xl font-bold mb-6">Client Dashboard</h2>
+      <div className="w-full flex relative justify-between">
+        <h2 className="text-2xl font-bold mb-6">Client Dashboard</h2>
+        <button className="absolute top-0 right-0" onClick={navigateToCreateGig}>
+          Create Gig
+        </button>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -114,5 +130,6 @@ export default function ClientDashboard() {
         
       </Table>
     </Card>
+    </div>
   );
 }

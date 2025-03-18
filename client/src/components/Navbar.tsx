@@ -12,21 +12,14 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [connectWallet, {data: walletAddress, error}] = useConnectWalletMutation();
 
-  const [ isClientDashboard, setIsClientDashboard ] = useState(false);
-
   const switchToClient =  () => {
     navigate('/client-dashboard');
-    setIsClientDashboard(true);
   }
 
   const navigateToHome = () => {
     navigate('/');
-    setIsClientDashboard(false);
   }
 
-  const navigateToCreateGig = () => {
-    navigate('/create-gig');
-  }
 
   const handleConnect = async () => {
     const response = await connectWallet().unwrap();
@@ -39,13 +32,13 @@ export default function Navbar() {
     navigate('/freelancer-dashboard');
   }
 
-  useEffect(() => {
-    connectWallet();
-  }, []);
+  // useEffect(() => {
+  //   connectWallet();
+  // }, []);
   
   return (
     <nav className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
             <button className="p-2 rounded-md text-gray-400 lg:hidden">
@@ -71,9 +64,9 @@ export default function Navbar() {
 
           <div className="flex items-center space-x-4">
             {
-              !isClientDashboard && (
+               (
                 <button onClick={switchToClient}>
-                  Switch to client
+                  Client Dashboard
                 </button>
               ) 
             }
@@ -83,15 +76,6 @@ export default function Navbar() {
             </button>
             
 
-            {
-              isClientDashboard ? (
-                <button onClick={navigateToCreateGig}>
-                  Create Gig
-                </button>
-              ) : (
-                ""
-              )
-            }
 
             <TooltipProvider>
               <Tooltip>
