@@ -42,7 +42,7 @@ const GigSchema = new Schema<IGig>(
     price: { type: Number, required: true },
     shortDesc: { type: String },
     createdAt: { type: Date, default: Date.now },
-    images: { type: [String] },
+    images: { type: [String], required: true },
     freelancerAddress: { type: String, default: null },
     proposals: { type: [ProposalSchema], default: [] },
     status: {

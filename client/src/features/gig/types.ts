@@ -16,7 +16,7 @@ export interface Gig {
     price: number;
     shortDesc?: string;
     createdAt?: Date;
-    images?: string[];
+    images: string[];
     freelancerAddress?: string;
     proposals?: Proposal[];
     status: 'pending' | 'assigned' | 'completed';

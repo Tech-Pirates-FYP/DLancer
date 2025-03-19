@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useEffect } from "react";
 
 export default function ClientDashboard() {
 
@@ -91,11 +92,24 @@ export default function ClientDashboard() {
               </Badge>
               </TableCell>
               <TableCell>
-                <span>
-                  {gig.freelancerAddress &&
-                    `${gig.freelancerAddress.slice(0, 6)}...${gig.freelancerAddress.slice(-4)}`
-                  }
-                </span>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      {
+                        gig.freelancerAddress ? (
+                          <span>
+                            {`${gig.freelancerAddress?.slice(0, 6)}...${gig.freelancerAddress?.slice(-4)}`}
+                          </span>
+                        ) : ("")
+                      }
+                    </TooltipTrigger>
+                    {gig.freelancerAddress && (
+                      <TooltipContent>
+                        <p>{gig.freelancerAddress}</p>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
               </TableCell>
 
               <TableCell>
@@ -111,9 +125,23 @@ export default function ClientDashboard() {
               <TableCell>
                 {gig.proposals?.map((prop, index) => (
                   <div key={index} className="flex items-center justify-between mb-2">
-                    <span>
-                      {`${prop.freelancerAddress.slice(0, 6)}...${prop.freelancerAddress.slice(-4)}`}
-                    </span>
+                    
+
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                        <span>
+                          {`${prop.freelancerAddress?.slice(0, 6)}...${prop.freelancerAddress?.slice(-4)}`}
+                        </span>
+                        </TooltipTrigger>
+                        {prop.freelancerAddress && (
+                          <TooltipContent>
+                            <p>{prop.freelancerAddress}</p>
+                          </TooltipContent>
+                        )}
+                      </Tooltip>
+                    </TooltipProvider>
+
                     {prop.status !== "accepted" && gig.status === 'pending' && (
                       <Button className="ml-2" onClick={() => onAcceptClick(gig._id, prop._id)}>
                         Accept

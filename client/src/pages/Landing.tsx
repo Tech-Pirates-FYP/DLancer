@@ -8,7 +8,7 @@ const Landing = () => {
     <div>
       <CategoryList />
       <AllGigs />
-      <FeaturedJobs />
+      {/* <FeaturedJobs /> */}
       <TopFreelancers />
     </div>
   )

@@ -4,6 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useGetFreelancerProposalsQuery } from "@/features/gig/gigAPI";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 export default function FreelancerDashboard() {
   const walletAddress = useSelector((state: RootState) => state.auth.walletAddress);
@@ -52,7 +54,25 @@ export default function FreelancerDashboard() {
               </Badge>
 
               </TableCell>
-              <TableCell>{proposal.clientAddress.slice(0, 6)}...{proposal.clientAddress.slice(-4)}</TableCell>
+              <TableCell>
+                {/* {proposal.clientAddress.slice(0, 6)}...{proposal.clientAddress.slice(-4)} */}
+
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                    <span>
+                      {`${proposal.clientAddress.slice(0, 6)}...${proposal.clientAddress.slice(-4)}`}
+                    </span>
+                    </TooltipTrigger>
+                    {proposal.clientAddress && (
+                      <TooltipContent>
+                        <p>{proposal.clientAddress}</p>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
+                
+              </TableCell>
               <TableCell>
                 <a href={proposal.file} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
                   View File

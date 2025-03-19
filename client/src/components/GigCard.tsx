@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,13 @@ const GigCard:React.FC<GigProps> = ({gig}) => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+      console.log("Gig Data:", gig);
+    }, [gig]);
+    
+    console.log("Gig Data:", gig);
+console.log("Image URL:", gig.images?.[0]);
+
   return (
     <div>
       <Card key={(gig as any)._id} className="p-4 border rounded-lg shadow-sm">
@@ -22,7 +29,7 @@ const GigCard:React.FC<GigProps> = ({gig}) => {
           <span>{gig.category}</span>
         </div>
         
-        <img src={gig.images[0]} alt="Gig Preview" className="w-full h-40 object-cover mt-2 rounded-lg"/>
+        {/* <img src={gig.images?.[0] || "/default-image.jpeg"} alt="Gig Preview" className="w-full h-40 object-cover mt-2 rounded-lg"/> */}
 
         <p className="text-sm text-gray-700">${gig.price}</p>
 
