@@ -1,0 +1,13 @@
+{
+    "53": {
+        "mockUSDC": {
+            "address": "0x2cc455650ddbD5cb9a548200fd9F47078C2945F6"
+        },
+        "GovernanceToken": {
+            "address": "0x45cAA49f00d1876302356c2eb0d0f9fC5Ba48A00"
+        },
+        "EscrowContract": {
+            "address": "0xba80FC33046Ea7C48DC47C4556080c5d436E5df2"
+        }
+    }
+}

@@ -26,14 +26,16 @@ export default function AllGigs() {
           gig.status==='pending' && (<GigCard gig={gig}/>)
         ))}
 
+      </div>
         {
           gigs && gigs.length > visibleGigs && (
-            <button onClick={showMoreGigCards}>
-              Show more
-            </button>
+            <div className="mt-4 w-full">
+              <button onClick={showMoreGigCards}>
+                Show more...
+              </button>
+            </div>
           )
         }
-      </div>
     </div>
   );
 }
