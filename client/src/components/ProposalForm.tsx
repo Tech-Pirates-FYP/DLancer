@@ -18,7 +18,7 @@ export default function ProposalForm() {
     const proposal = useSelector((state: RootState) => state.gig.proposal);
     const walletAddress = useSelector((state: RootState) => state.auth.walletAddress);
 
-    console.log(walletAddress)
+    // console.log(walletAddress)
     
     const [submitProposal, { isLoading, error, isSuccess }] = useSubmitProposalMutation();
     

@@ -1,13 +1,18 @@
 {
+    "84532": {
+        "mockUSDC": {
+            "address": "0x9ACB94eb7b25b7e3b1692320f1357C20A6a2eEB8"
+        },
+        "EscrowFactory": {
+            "address": "0x25Fdd3EF3704a415e1de6DDCffD41Ff66d619be8"
+        }
+    },
     "53": {
         "mockUSDC": {
-            "address": "0x2cc455650ddbD5cb9a548200fd9F47078C2945F6"
+            "address": "0xf5A3939b2d8aF698Eb2270A461eb6767455Af99b"
         },
-        "GovernanceToken": {
-            "address": "0x45cAA49f00d1876302356c2eb0d0f9fC5Ba48A00"
-        },
-        "EscrowContract": {
-            "address": "0xba80FC33046Ea7C48DC47C4556080c5d436E5df2"
+        "EscrowFactory": {
+            "address": "0x06fb68338E8647D3a5cF128fB0fb5A9782434046"
         }
     }
 }

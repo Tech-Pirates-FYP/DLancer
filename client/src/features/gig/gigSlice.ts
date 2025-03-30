@@ -20,7 +20,9 @@ const initialState: GigState = {
         createdAt: undefined,
         images: [],
         freelancerAddress: undefined,
+        submissionLink: "",
         proposals: [], 
+        escrowAddress: "",
         status: "pending",
     },
     proposal: {
@@ -59,8 +61,13 @@ const gigSlice = createSlice({
             state.proposal = { ...initialState.proposal }; 
         },
 
+        setEscrowContractAddress: (state, action) => {
+            state.gig.escrowAddress = action.payload;
+        },
+        
+
     }
 });
 
-export const { setGigData, resetGigData, setFile, setProposalFreelancerAddress, setStatus, resetProposalForm } = gigSlice.actions;
+export const { setGigData, resetGigData, setFile, setProposalFreelancerAddress, setStatus, resetProposalForm, setEscrowContractAddress } = gigSlice.actions;
 export default gigSlice.reducer;

@@ -7,17 +7,17 @@ async function main () {
     const mockUSDCContractAddress = await mockUSDCContract.getAddress();
     console.log('mockUSDC contract deployed to:', mockUSDCContractAddress);
 
-    const governanceToken = await ethers.getContractFactory("GovernanceToken");
-    console.log('Deploying governanceToken contract...');
-    const governanceTokenContract = await governanceToken.deploy();
-    const governanceTokenContractAddress = await governanceTokenContract.getAddress();
-    console.log('governanceToken contract deployed to:', governanceTokenContractAddress);
+    // const governanceToken = await ethers.getContractFactory("GovernanceToken");
+    // console.log('Deploying governanceToken contract...');
+    // const governanceTokenContract = await governanceToken.deploy();
+    // const governanceTokenContractAddress = await governanceTokenContract.getAddress();
+    // console.log('governanceToken contract deployed to:', governanceTokenContractAddress);
 
-    const EscrowContract = await ethers.getContractFactory("EscrowContract");
-    console.log('Deploying escrowContract ...');
-    const escrowContract = await EscrowContract.deploy(mockUSDCContractAddress, governanceTokenContractAddress);
-    const escrowContractAddress = await escrowContract.getAddress();
-    console.log('escrowContract deployed to:', escrowContractAddress);
+    const EscrowFactory = await ethers.getContractFactory("EscrowFactory");
+    console.log('Deploying EscrowFactory ...');
+    const escrowFactory = await EscrowFactory.deploy(mockUSDCContractAddress);
+    const escrowFactoryAddress = await escrowFactory.getAddress();
+    console.log('EscrowFactory deployed to:', escrowFactoryAddress);
 }
 
 main()

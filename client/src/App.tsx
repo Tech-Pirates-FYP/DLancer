@@ -23,6 +23,8 @@ function App() {
         <Route path="/allgigs" element={<AllGigsPage />} />
         <Route path="/gig/:gigId" element={<GigDetails />} />
         <Route path="/proposal-form" element={<ProposalForm />} />
+
+
       </Routes>
       
     </div>

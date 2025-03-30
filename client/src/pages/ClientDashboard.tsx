@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../features/store";
-import { useAcceptProposalMutation, useGetGigsByWalletQuery } from "../features/gig/gigAPI";
+import { useAcceptProposalMutation, useEditGigMutation, useGetGigsByWalletQuery } from "../features/gig/gigAPI";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,26 +8,41 @@ import { Button } from "@/components/ui/button";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useBalanceOfQuery, useCreateEscrowMutation, useFundEscrowMutation, useGetAllEscrowsQuery, useGetEscrowStateQuery, useLoadMockUSDCContractQuery, useMintTokenMutation, useReleasePaymentMutation } from "@/features/blockchain/blockApi";
+import { useDispatch } from "react-redux";
+import { setEscrowContractAddress } from "@/features/gig/gigSlice";
 
 export default function ClientDashboard() {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [clicked, setClicked] = useState(false);
+  const [balance, setBalance] = useState(0);
+  const [ tokens, setTokens ] = useState(0);
+  const [escrowAddress, setEscrowAddress] = useState("");
+  const [ amount, setAmount ] = useState(0);
+  const [fundedEscrows, setFundedEscrows] = useState<{ [key: string]: boolean }>({});
+  const [releasedPayment, setReleasedPayment] = useState<{ [key: string]: boolean }>({});
 
   const walletAddress = useSelector((state: RootState) => state.auth.walletAddress);
-  console.log("walletAddress: ", walletAddress);
+  // console.log("walletAddress: ", walletAddress);
 
-  const { data: gigs, error, isLoading } = useGetGigsByWalletQuery(walletAddress!, {
-    skip: !walletAddress,
-  });
+  const { data: gigs, isLoading } = useGetGigsByWalletQuery(walletAddress!, {skip: !walletAddress,});
+  const [ createEscrow ] = useCreateEscrowMutation();
+  const [ mintToken ] = useMintTokenMutation();
+  const { data: escrows } = useGetAllEscrowsQuery();
+  const [ acceptProposal ] = useAcceptProposalMutation();
+  const {data: balanceOf} = useBalanceOfQuery(walletAddress!, {skip: !walletAddress,});
+  const [ fundEscrow ] = useFundEscrowMutation();
+  const [ editGig ] = useEditGigMutation();
+  const [ releasePayment ] = useReleasePaymentMutation();
+  // const { data: state } = useGetEscrowStateQuery(escrowAddress, {skip: !escrowAddress});
 
   const navigateToCreateGig = () => {
     navigate('/create-gig');
   }
-
-  const [ acceptProposal, { isSuccess } ] = useAcceptProposalMutation();
-
-  // console.log("gigs: ", gigs);
 
   const onAcceptClick = async (gigId: string, proposalId: string) => {
     try {
@@ -47,16 +62,106 @@ export default function ClientDashboard() {
       console.error("Error accepting proposal:", error);
     }
   };
+  
+  const handleCreateEscrow = async (freelancer: string, amount: number, days: number, gigId: string) => {
+    try {
+      const response = await createEscrow({ freelancer, amount, days }).unwrap();
+      console.log("Escrow created successfully:", response);
+      setEscrowAddress(response);
+      dispatch(setEscrowContractAddress(response));
+      const res = await editGig({ gigId, updates: { escrowAddress: response } }).unwrap();
+      console.log("edited gig: ", res);
+      alert("Escrow created successfully!");
+    } catch (err: any) {
+      console.error("Error creating escrow:", err);
+      alert("Error creating escrow: " + (err.data || err.message));
+    }
+  }
 
-  // if( gigs?.length === 0) {
-  //   return <p>No Gigs created</p>
-  // }
+  const handleMint = async (e: any) => {
+    e.preventDefault();
+    try {
+      if (!walletAddress) {
+        console.error("Wallet address is null");
+        return;
+      }
+      console.log("tokens: ", tokens);
+      const response = await mintToken({ to: walletAddress, amount: tokens }).unwrap();
+      console.log("Token minted successfully:", response);
+    } 
+    catch (error) {
+      console.error("Error minting token:", error);
+    }
+  }
+
+  const handleClick = () => {
+    const balance = Number(balanceOf ?? 0) / 10 ** 18;
+    setBalance(balance);
+    setClicked(true);
+  };
+
+  const handleFundEscrow = async (gig: any) => {
+    const escrowAddress = gig.escrowAddress;
+    const amount = gig.price * 10 ** 18;
+    try {
+      await fundEscrow({ escrowAddress, amount }).unwrap();
+      await editGig({ gigId: gig._id, updates: { status: "funded" } }).unwrap();
+      console.log("Funding escrow with address: ", escrowAddress);
+  
+      setFundedEscrows((prev) => ({
+        ...prev,
+        [escrowAddress]: true,
+      }));
+    } catch (error) {
+      console.error("Error funding escrow:", error);
+    }
+  };
+
+  const handleReleasePayment = async ({escrowAddress, gigId}: { escrowAddress: string; gigId: string }) => {
+    try {
+      await releasePayment( escrowAddress );
+      console.log("Payment released");
+
+      setReleasedPayment((prev) => ({
+        ...prev,
+        [escrowAddress]: true,
+      }))
+
+      toast.success("Payment released successfully");
+
+      await editGig({ gigId, updates: { status: "completed" } }).unwrap();
+
+    } catch (error: any) {
+      console.log("Error releasing payment: ", error);      
+    }
+  }
+
+
   if (isLoading) return <p>Loading gigs...</p>;
-  // if (error) return <p>Error fetching gigs</p>;
-
 
   return (
     <div className="gap_section">
+
+      <div className="w-[30%]">
+        <span className="text-lg">Please mint token before creating gig</span>
+        <div className="flex flex-col gap-2">
+          <input onChange={(e) => setTokens(Number(e.target.value))} className="border border-2xl p-2 border-black bg-white text-black" type="number" value={tokens} id="mintAmount" placeholder="Amount" />
+          <button
+            onClick={handleMint}
+            className="border text-lg font-semibold px-5 py-3   border-[#1DBF73] bg-[#1DBF73] text-white rounded-md"
+          >
+            Mint Tokens
+          </button>
+          <button 
+            onClick={handleClick} 
+            className="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 font-medium text-lg px-10 py-3 rounded-md"
+          >
+            {clicked ? `Token Balance : ${balance}` : 'Get Token Balance'}
+          </button>
+        </div>
+        <br />
+      </div>
+
     <Card className="p-6">
       <ToastContainer aria-label={undefined} />
 
@@ -147,9 +252,52 @@ export default function ClientDashboard() {
                         Accept
                       </Button>
                     )}
+
+                    {prop.status === "accepted" && !gig.escrowAddress && (
+                      <Button 
+                        className="ml-2" 
+                        onClick={() => handleCreateEscrow(gig.freelancerAddress ?? "", gig.price, gig.deliveryTime, gig._id)}
+                      >
+                        Create Contract
+                      </Button>
+                    )}
+
+                    {prop.status === "accepted" && gig.status !== "funded" && gig.escrowAddress && (
+                      <Button 
+                        className="ml-2" 
+                        onClick={() => handleFundEscrow(gig)}
+                      >
+                        Fund Contract
+                      </Button>
+                    )}
+
+                    {prop.status === "accepted" && gig.status==="funded" && gig.escrowAddress && gig.submissionLink  && (
+                      <Button 
+                        className="ml-2" 
+                        onClick={() => handleReleasePayment({ escrowAddress: gig.escrowAddress!, gigId: gig._id })}
+                      >
+                        Release Payment
+                      </Button>
+                    )}
+
                   </div>
                 ))}
               </TableCell>
+
+
+              <TableCell>
+              {
+                gig.submissionLink && (
+                  <div className="flex items-center justify-between mb-2">
+                    <a href={gig.submissionLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                      Show Submission Link
+                    </a>
+                  </div>
+                )
+              }
+              </TableCell>
+
+              
               
             </TableRow>
             ))

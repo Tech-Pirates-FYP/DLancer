@@ -191,6 +191,7 @@ export const getProposalsByWalletAddress = async (req: Request, res: Response): 
                 .filter((proposal: any) => proposal.freelancerAddress === walletAddress)
                 .map((proposal: any) => ({
                     proposalId: proposal._id,
+                    gigId: gig._id,
                     gigTitle: gig.title,
                     gigCategory: gig.category,
                     gigPrice: gig.price,

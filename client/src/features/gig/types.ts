@@ -19,11 +19,14 @@ export interface Gig {
     images: string[];
     freelancerAddress?: string;
     proposals?: Proposal[];
-    status: 'pending' | 'assigned' | 'completed';
-  }
+    submissionLink?: string;
+    escrowAddress?: string;
+    status: 'pending' | 'assigned' | 'funded' | 'submitted' | 'completed';
+}
 
 export interface FreelancerProposal {
     proposalId: string,
+    gigId: string,
     gigTitle: string,
     gigCategory: string,
     gigPrice: number,

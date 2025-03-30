@@ -21,7 +21,9 @@ export interface IGig extends Document {
   images?: string[];
   freelancerAddress?: string;
   proposals?: IProposal[];
-  status: 'pending' | 'assigned' | 'completed';
+  submissionLink?: string;
+  escrowAddress?: string;
+  status: 'pending' | 'assigned' | 'funded' | 'submitted' | 'completed';
 }
 
 const ProposalSchema = new Schema({
@@ -45,6 +47,8 @@ const GigSchema = new Schema<IGig>(
     images: { type: [String], required: true },
     freelancerAddress: { type: String, default: null },
     proposals: { type: [ProposalSchema], default: [] },
+    submissionLink: { type: String },
+    escrowAddress: { type: String },
     status: {
       type: String,
       enum: ['pending', 'assigned', 'completed'],

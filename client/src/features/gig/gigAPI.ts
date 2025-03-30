@@ -14,7 +14,7 @@ export const gigAPI = createApi ({
           query: () => `/`
         }),
 
-        getGigById: builder.query<Gig, string> ({
+        getGigById: builder.query<Gig[], string> ({
           query: (gigId) => `/${gigId}`
         }),
         
@@ -43,8 +43,26 @@ export const gigAPI = createApi ({
 
         getFreelancerProposals: builder.query<FreelancerProposal, string> ({
           query: (walletAddress) => `/proposals/${walletAddress}`
-        })
+        }),
+
+        editGig: builder.mutation<any, { gigId: string; updates: Record<string, any>  }> ({
+          query: ({ gigId, updates  }) => ({
+              url: `/edit/${gigId}`,
+              method: "PUT",
+              body: updates ,
+          }),
+        }),
+
     }),
 })
 
-export const { useGetGigsByWalletQuery, useCreateGigMutation, useGetGigByIdQuery, useGetAllGigsQuery, useSubmitProposalMutation, useAcceptProposalMutation, useGetFreelancerProposalsQuery  } = gigAPI;
+export const { 
+  useGetGigsByWalletQuery, 
+  useCreateGigMutation, 
+  useGetGigByIdQuery, 
+  useGetAllGigsQuery, 
+  useSubmitProposalMutation, 
+  useAcceptProposalMutation, 
+  useGetFreelancerProposalsQuery,
+  useEditGigMutation,
+} = gigAPI;

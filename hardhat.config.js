@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL || "https://eth-sepolia";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xkey";
+const PRIVATE_KEY_2 = process.env.PRIVATE_KEY_2 || "0xkey";
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "key";
 
 module.exports = {
@@ -27,7 +28,7 @@ module.exports = {
     },
     baseSepolia: {
       url: "https://sepolia.base.org",
-      accounts: [PRIVATE_KEY],
+      accounts: [PRIVATE_KEY_2],
       chainId: 84532
     }
   },
