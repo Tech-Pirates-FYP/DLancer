@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useBalanceOfQuery, useSubmitWorkMutation } from "@/features/blockchain/blockApi";
+import { toast } from "react-toastify";
 
-export default function FreelancerDashboard() {  
+export default function FreelancerDashboard2() {  
   const walletAddress = useSelector((state: RootState) => state.auth.walletAddress);
   const dispatch = useDispatch();
 
@@ -44,7 +45,7 @@ export default function FreelancerDashboard() {
     setGigid(gigId);
     const link = submissionLink[gigId]; 
     if (!link?.trim()) { 
-      alert("Please enter a submission link before submitting.");
+      toast.error("Please enter a submission link before submitting.");
       return;
     }
     console.log("gigid: ", gigid);
@@ -52,15 +53,15 @@ export default function FreelancerDashboard() {
     
     try {
       if (!gigData?.escrowAddress) {
-        alert("Escrow address is missing. Please try again later.");
+        toast.error("Escrow address is missing. Please try again later.");
         return;
       }
       await submitWork({ escrowAddress: gigData.escrowAddress, submissionLink: link }).unwrap();
       await editGig({ gigId, updates: { submissionLink: link, status: "submitted" } }).unwrap();
-      alert("Submission link submitted successfully!");
+      toast.success("Submission link submitted successfully!");
     } catch (error) {
       console.error("Error submitting the link:", error);
-      alert("Failed to submit the link. Please try again.");
+      toast.error("Failed to submit the link. Please try again.");
     }
   };
 

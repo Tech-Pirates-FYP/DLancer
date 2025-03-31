@@ -48,14 +48,7 @@ export default function ClientDashboard() {
     try {
       await acceptProposal({ gigId, proposalId }).unwrap();
       toast.success("Successfully Accepted the proposal", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+        position: "top-center"
       });
       console.log(`Accepted proposal ${proposalId} for gig ${gigId}`);
     } catch (error) {
@@ -71,7 +64,7 @@ export default function ClientDashboard() {
       dispatch(setEscrowContractAddress(response));
       const res = await editGig({ gigId, updates: { escrowAddress: response } }).unwrap();
       console.log("edited gig: ", res);
-      alert("Escrow created successfully!");
+      toast.success("Escrow created successfully!");
     } catch (err: any) {
       console.error("Error creating escrow:", err);
       alert("Error creating escrow: " + (err.data || err.message));
@@ -87,6 +80,7 @@ export default function ClientDashboard() {
       }
       console.log("tokens: ", tokens);
       const response = await mintToken({ to: walletAddress, amount: tokens }).unwrap();
+      toast.success("Token minted successfully!");
       console.log("Token minted successfully:", response);
     } 
     catch (error) {
@@ -107,6 +101,7 @@ export default function ClientDashboard() {
       await fundEscrow({ escrowAddress, amount }).unwrap();
       await editGig({ gigId: gig._id, updates: { status: "funded" } }).unwrap();
       console.log("Funding escrow with address: ", escrowAddress);
+      toast.success("Escrow funded successfully!");
   
       setFundedEscrows((prev) => ({
         ...prev,
@@ -262,7 +257,7 @@ export default function ClientDashboard() {
                       </Button>
                     )}
 
-                    {prop.status === "accepted" && gig.status !== "funded" && gig.escrowAddress && (
+                    {prop.status === "accepted" && gig.status === "assigned" && (
                       <Button 
                         className="ml-2" 
                         onClick={() => handleFundEscrow(gig)}
@@ -271,7 +266,7 @@ export default function ClientDashboard() {
                       </Button>
                     )}
 
-                    {prop.status === "accepted" && gig.status==="funded" && gig.escrowAddress && gig.submissionLink  && (
+                    {prop.status === "accepted" && gig.status==="submitted"  && (
                       <Button 
                         className="ml-2" 
                         onClick={() => handleReleasePayment({ escrowAddress: gig.escrowAddress!, gigId: gig._id })}
