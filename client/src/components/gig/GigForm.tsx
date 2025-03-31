@@ -50,16 +50,7 @@ export default function GigForm() {
     e.preventDefault();
     try {
       await createGig(gigData.gig).unwrap();
-      toast.success("Successfully posted gig!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Successfully posted gig!", {position: "top-center"});
       dispatch(resetGigData());
       setTimeout(() => navigate('/client-dashboard'), 3000);
     } catch (error) {

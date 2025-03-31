@@ -29,16 +29,7 @@ export default function ProposalForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await submitProposal({ gigId: gigId as string, freelancerAddress: proposal.freelancerAddress, file: proposal.file }); 
-        toast.success("Successfully request sent!", {
-            position: "top-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          })    
+        toast.success("Successfully request sent!", {position: "top-center"})    
         setTimeout(() => {
             navigate('/');
         }, 3000)

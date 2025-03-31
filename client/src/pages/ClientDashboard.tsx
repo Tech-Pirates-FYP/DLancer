@@ -47,9 +47,7 @@ export default function ClientDashboard() {
   const onAcceptClick = async (gigId: string, proposalId: string) => {
     try {
       await acceptProposal({ gigId, proposalId }).unwrap();
-      toast.success("Successfully Accepted the proposal", {
-        position: "top-center"
-      });
+      toast.success("Successfully Accepted the proposal", {position: "top-center"});
       console.log(`Accepted proposal ${proposalId} for gig ${gigId}`);
     } catch (error) {
       console.error("Error accepting proposal:", error);
@@ -64,7 +62,7 @@ export default function ClientDashboard() {
       dispatch(setEscrowContractAddress(response));
       const res = await editGig({ gigId, updates: { escrowAddress: response } }).unwrap();
       console.log("edited gig: ", res);
-      toast.success("Escrow created successfully!");
+      toast.success("Escrow created successfully!", {position: "top-center"});
     } catch (err: any) {
       console.error("Error creating escrow:", err);
       alert("Error creating escrow: " + (err.data || err.message));
@@ -80,7 +78,7 @@ export default function ClientDashboard() {
       }
       console.log("tokens: ", tokens);
       const response = await mintToken({ to: walletAddress, amount: tokens }).unwrap();
-      toast.success("Token minted successfully!");
+      toast.success("Token minted successfully!", {position: "top-center"});
       console.log("Token minted successfully:", response);
     } 
     catch (error) {
@@ -101,7 +99,7 @@ export default function ClientDashboard() {
       await fundEscrow({ escrowAddress, amount }).unwrap();
       await editGig({ gigId: gig._id, updates: { status: "funded" } }).unwrap();
       console.log("Funding escrow with address: ", escrowAddress);
-      toast.success("Escrow funded successfully!");
+      toast.success("Escrow funded successfully!", {position: "top-center"});
   
       setFundedEscrows((prev) => ({
         ...prev,
@@ -122,7 +120,7 @@ export default function ClientDashboard() {
         [escrowAddress]: true,
       }))
 
-      toast.success("Payment released successfully");
+      toast.success("Payment released successfully", {position: "top-center"});
 
       await editGig({ gigId, updates: { status: "completed" } }).unwrap();
 

@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useBalanceOfQuery, useSubmitWorkMutation } from "@/features/blockchain/blockApi";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function FreelancerDashboard() {  
   const walletAddress = useSelector((state: RootState) => state.auth.walletAddress);
@@ -56,7 +56,7 @@ export default function FreelancerDashboard() {
       }
       await submitWork({ escrowAddress: gig.escrowAddress, submissionLink: link }).unwrap();
       await editGig({ gigId: gig._id, updates: { submissionLink: link, status: "submitted" } }).unwrap();
-      toast.success("Submission link submitted successfully!");
+      toast.success("Submission link submitted successfully!", {position: "top-center"});
     } catch (error) {
       console.error("Error submitting the link:", error);
       toast.error("Failed to submit the link. Please try again.");
@@ -83,6 +83,7 @@ export default function FreelancerDashboard() {
         {clicked ? `Token Balance : ${balance}` : 'Get Token Balance'}
       </button>
       <Card className="p-6">
+      <ToastContainer aria-label={undefined} />
         <h2 className="text-2xl font-bold mb-6">Freelancer Dashboard</h2>
         <Table>
           <TableHeader>

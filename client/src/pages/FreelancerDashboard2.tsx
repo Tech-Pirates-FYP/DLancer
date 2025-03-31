@@ -58,7 +58,7 @@ export default function FreelancerDashboard2() {
       }
       await submitWork({ escrowAddress: gigData.escrowAddress, submissionLink: link }).unwrap();
       await editGig({ gigId, updates: { submissionLink: link, status: "submitted" } }).unwrap();
-      toast.success("Submission link submitted successfully!");
+      toast.success("Submission link submitted successfully!", {position: "top-center"});
     } catch (error) {
       console.error("Error submitting the link:", error);
       toast.error("Failed to submit the link. Please try again.");
