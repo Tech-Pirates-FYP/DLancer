@@ -109,12 +109,21 @@ export default function FreelancerDashboard() {
                             <TableCell>{gig.category}</TableCell>
                             <TableCell>{gig.price}</TableCell>
                             <TableCell>
-                              <Badge
-                                variant={prop.status === "pending" ? "secondary" : prop.status === "rejected" ? "destructive" : "default"}
-                                className={prop.status === "accepted" ? "bg-green-500 text-white" : ""}
-                              >
-                                {prop.status}
-                              </Badge>
+                              {
+                                gig.status === "pending" || gig.status === "assigned" ? (
+                                  <Badge
+                                    variant={prop.status === "pending" ? "gray" : prop.status === "rejected" ? "destructive" : "green"}
+                                  >
+                                    {prop.status}
+                                  </Badge>
+                                ) : (
+                                  <Badge
+                                    variant={gig.status === "funded" ? "yellow" : gig.status === "submitted" ? "purple" : "green"}
+                                  >
+                                    {gig.status}
+                                  </Badge>
+                                )
+                              }
                             </TableCell>
                             <TableCell>
                               <TooltipProvider>

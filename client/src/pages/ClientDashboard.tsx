@@ -174,6 +174,7 @@ export default function ClientDashboard() {
             <TableHead>Freelancer Assigned</TableHead>
             <TableHead>View File</TableHead>
             <TableHead>Proposals</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -185,7 +186,11 @@ export default function ClientDashboard() {
               <TableCell>{gig.category}</TableCell>
               <TableCell>{gig.price}</TableCell>
               <TableCell>
-              <Badge variant={gig.status === "completed" ? "default" : gig.status === "pending" ? "secondary" : "destructive"}>
+              <Badge variant={gig.status === "pending" ? "gray" : 
+                gig.status === "assigned" ? "blue" : 
+                gig.status==="funded"? "yellow": 
+                gig.status==="submitted"? "purple": "green"}
+              >
                 {gig.status}
               </Badge>
               </TableCell>
@@ -240,7 +245,17 @@ export default function ClientDashboard() {
                       </Tooltip>
                     </TooltipProvider>
 
-                    {prop.status !== "accepted" && gig.status === 'pending' && (
+                    
+
+                  </div>
+                ))}
+              </TableCell>
+
+              <TableCell>
+                {
+                  gig.proposals?.map((prop, index) => (
+                    <div>
+                      {prop.status !== "accepted" && gig.status === 'pending' && (
                       <Button className="ml-2" onClick={() => onAcceptClick(gig._id, prop._id)}>
                         Accept
                       </Button>
@@ -272,9 +287,9 @@ export default function ClientDashboard() {
                         Release Payment
                       </Button>
                     )}
-
-                  </div>
-                ))}
+                    </div>
+                  ))
+                }
               </TableCell>
 
 
@@ -283,7 +298,7 @@ export default function ClientDashboard() {
                 gig.submissionLink && (
                   <div className="flex items-center justify-between mb-2">
                     <a href={gig.submissionLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-                      Show Submission Link
+                      Submission Link
                     </a>
                   </div>
                 )
