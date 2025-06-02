@@ -36,7 +36,7 @@ Follow these steps to get DLancer up and running locally.
 ### 1. 📁 Clone the Repository
 ```bash
 git clone https://github.com/Tech-Pirates-FYP/DLancer.git
-cd DLancer-FYP
+cd DLancer
 ```
 
 ### 2. 📁 Add .env in root folder
