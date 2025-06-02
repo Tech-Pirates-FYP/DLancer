@@ -8,7 +8,7 @@ DLancer is a decentralized gig economy platform that leverages blockchain techno
 - **Satyam Kumar** - https://github.com/ThakurSatyam04
 - **Anjali Singh** - https://github.com/Anjali0048
 - **Rohit Kumar** - https://github.com/ROHIT-01234
-- **Sudhir Shenai** - sudhir.shenai@nmit.ac.in
+- **Sudhir Shenai** - https://github.com/sudhir-shenai
 
 ## 🛠 Tech Stack
 
