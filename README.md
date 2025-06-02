@@ -17,7 +17,6 @@ DLancer is a decentralized gig economy platform that leverages blockchain techno
 - **Tailwind CSS / Shadcn UI** – Styling
 - **Ethers.js** – Web3 integration
 - **React Router** – Routing
-- **Zod / react-hook-form** – Form validation
 - **WalletConnect / MetaMask** – Wallet login
 
 ### Backend
@@ -25,7 +24,6 @@ DLancer is a decentralized gig economy platform that leverages blockchain techno
 - **Express.js** – API framework
 - **MongoDB (Mongoose)** – Database
 - **Web3.js / Ethers.js** – Smart contract interaction
-- **Google Sheets API** – Optional reporting
 
 ---
 
