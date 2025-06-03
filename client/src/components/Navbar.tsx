@@ -1,25 +1,40 @@
-import { Menu, Search, User } from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useConnectWalletMutation } from '../features/auth/authAPI';
-import { setWalletAddress } from '../features/auth/authSlice';
-import { useEffect, useState } from 'react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Menu, Search, User } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useConnectWalletMutation } from "../features/auth/authAPI";
+import { setWalletAddress } from "../features/auth/authSlice";
+import { useEffect, useRef, useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Navbar() {
-
+  const dropdownRef = useRef(null);
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [connectWallet, {data: walletAddress, error}] = useConnectWalletMutation();
+  const [connectWallet, { data: walletAddress, error }] =
+    useConnectWalletMutation();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const switchToClient =  () => {
-    navigate('/client-dashboard');
-  }
+  const switchToClient = () => {
+    navigate("/client-dashboard");
+  };
+
+  const switchToFreelancerDashboard = () => {
+    navigate("/freelancer-dashboard");
+  };
+
+  const switchToArbiterDashboard = () => {
+    navigate("/arbiter");
+  };
 
   const navigateToHome = () => {
-    navigate('/');
-  }
-
+    navigate("/");
+  };
 
   const handleConnect = async () => {
     const response = await connectWallet().unwrap();
@@ -28,25 +43,38 @@ export default function Navbar() {
     }
   };
 
-  const switchToFreelancerDashboard = () => {
-    navigate('/freelancer-dashboard');
-  }
-
   // useEffect(() => {
   //   connectWallet();
   // }, []);
-  
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <nav className=" top-0 left-0 w-full z-20">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+    <nav className="fixed top-0 left-0 w-full z-20 h-[80px] flex justify-between items-center bg-white shadow-sm">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-36 flex justify-between">
+        <div className="w-full flex justify-between h-16 items-center">
           <div className="flex items-center">
             <button className="p-2 rounded-md text-gray-400 lg:hidden">
               <Menu className="h-6 w-6" />
             </button>
-            <div className="text-2xl font-bold text-indigo-600 ml-2 cursor-pointer" onClick={navigateToHome}>DLancer</div>
+            <div
+              className="text-2xl font-bold text-indigo-600 ml-2 cursor-pointer"
+              onClick={navigateToHome}
+            >
+              DLancer
+            </div>
           </div>
-          
+
           <div className="hidden lg:flex flex-1 items-center justify-center px-8">
             <div className="max-w-lg w-full">
               <div className="relative">
@@ -62,26 +90,21 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="relative flex items-center space-x-4 " ref={dropdownRef}>
             {
-               (
-                <button onClick={switchToClient}>
-                  Client Dashboard
-                </button>
-              ) 
+              location.pathname !== "/client-dashboard" && location.pathname !== "/freelancer-dashboard" && (
+                <button onClick={switchToClient}>Dashboard</button>
+              )
             }
-
-            <button onClick={switchToFreelancerDashboard}>
-              Freelancer Dashboard
-            </button>
-            
-
-
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button onClick={handleConnect} >
-                    {walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "Connect"}
+                  <button onClick={handleConnect}>
+                    {walletAddress
+                      ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(
+                          -4
+                        )}`
+                      : "Connect"}
                   </button>
                 </TooltipTrigger>
                 {walletAddress && (
@@ -92,9 +115,47 @@ export default function Navbar() {
               </Tooltip>
             </TooltipProvider>
 
-            <button className="p-2 rounded-full text-gray-400 hover:text-gray-500">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 rounded-full text-gray-400 hover:text-gray-500"
+            >
               <User className="h-6 w-6" />
             </button>
+
+            {/* Dropdown Menu */}
+            {isOpen && (
+              <div className="absolute right-0 top-12 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <ul>
+                  <li
+                    onClick={() => {
+                      switchToClient();
+                      setIsOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Switch as Client
+                  </li>
+                  <li
+                    onClick={() => {
+                      switchToFreelancerDashboard();
+                      setIsOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Switch as Freelancer
+                  </li>
+                  <li
+                    onClick={() => {
+                      switchToArbiterDashboard();
+                      setIsOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Switch as Arbiter
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

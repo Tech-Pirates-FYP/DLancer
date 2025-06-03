@@ -208,16 +208,43 @@ export const blockApi = createApi({
                 }
             }
         }),   
+
+        raiseDispute: builder.mutation<string, string> ({
+            queryFn: async (escrowAddress) => {
+                try {
+                    const escrowContract = await loadEscrowContract(escrowAddress);
+                    const tx = await escrowContract.raiseDispute();
+                    await tx.wait();
+                    return { data: tx.hash };
+                }
+                catch (error: any) {
+                    return { error: { status: "FETCH_ERROR", data: error.message, error: error.name || "Unknown Error" } };
+                }
+            }
+        }),
+
+        
+        vote: builder.mutation<string, { escrowAddress: string; inFavor: boolean }>({
+            queryFn: async ({ escrowAddress, inFavor }) => {
+                try {
+                    const escrowContract = await loadEscrowContract(escrowAddress);
+                    const tx = await escrowContract.vote(inFavor);
+                    await tx.wait();
+                    return { data: tx.hash };
+                } catch (error: any) {
+                    return { error: { status: "FETCH_ERROR", data: error.message, error: error.name || "Unknown Error" } };
+                }
+            }
+        }),
         
         getEscrowState: builder.query<any, string>({
             queryFn: async (escrowAddress) => {
                 try {
                     const escrowContract = await loadEscrowContract(escrowAddress);
                     
-                    const stateIndex  = await escrowContract.getEscrowState();
-                    const stateMapping = ["AWAITING_PAYMENT", "AWAITING_DELIVERY", "WORK_SUBMITTED", "COMPLETE", "REFUNDED"];
+                    const state  = await escrowContract.getEscrowState();
 
-                    return { data: stateMapping[stateIndex] };
+                    return state
                 }
                 catch (error: any) {
                     return { error: { status: "FETCH_ERROR", data: error.message, error: error.name || "Unknown Error" } };
@@ -239,5 +266,7 @@ export const {
     useFundEscrowMutation,
     useSubmitWorkMutation,
     useReleasePaymentMutation,
+    useRaiseDisputeMutation,
+    useVoteMutation,
     useGetEscrowStateQuery,
 } = blockApi;

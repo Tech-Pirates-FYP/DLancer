@@ -6,6 +6,7 @@ export interface Proposal {
 }
 
 export interface Gig {
+    _id: string;
     walletAddress: string;
     title: string;
     description: string;
@@ -21,7 +22,7 @@ export interface Gig {
     proposals?: Proposal[];
     submissionLink?: string;
     escrowAddress?: string;
-    status: 'pending' | 'assigned' | 'funded' | 'submitted' | 'completed';
+    status: 'pending' | 'assigned' | 'funded' | 'submitted' | 'completed' | 'dispute';
 }
 
 export interface FreelancerProposal {

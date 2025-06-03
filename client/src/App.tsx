@@ -8,6 +8,7 @@ import AllGigsPage from "./pages/AllGigsPage";
 import GigDetails from "./components/GigDetails";
 import ProposalForm from "./components/ProposalForm";
 import FreelancerDashboard from "./pages/FreelancerDashboard";
+import ArbiterPage from "./pages/ArbiterPage";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         <Route path="/allgigs" element={<AllGigsPage />} />
         <Route path="/gig/:gigId" element={<GigDetails />} />
         <Route path="/proposal-form" element={<ProposalForm />} />
-
+        <Route path="/arbiter" element={<ArbiterPage />} />
 
       </Routes>
       

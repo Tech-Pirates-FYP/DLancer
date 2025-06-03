@@ -59,7 +59,7 @@ export default function GigForm() {
   };
 
   return (
-    <div className="">
+    <div className="flex items-center h-full justify-center overflow-auto">
       <Card className="p-6">
         <ToastContainer aria-label={undefined} />
         <form className="space-y-6">
@@ -92,12 +92,13 @@ export default function GigForm() {
             </div>
 
             <div>
-              <Label>Budget</Label>
+              <Label>Gig Amount</Label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                   <DollarSign className="h-5 w-5 text-gray-400" />
                 </div>
-                <Input value={gigData.gig.price} name="price" onChange={handleChange} type="number" className="pl-10" placeholder="1000" />
+                <Input value={gigData.gig.price} name="price" onChange={handleChange} type="number" className="pl-10 [&::-webkit-outer-spin-button]:appearance-none 
+             [&::-webkit-inner-spin-button]:appearance-none" placeholder="Enter amount" />
               </div>
             </div>
           </div>
@@ -109,7 +110,8 @@ export default function GigForm() {
 
           <div>
             <Label>Project Deadline</Label>
-            <Input value={gigData.gig.deliveryTime} name="deliveryTime" onChange={handleChange} type="number" />
+            <Input className="[&::-webkit-outer-spin-button]:appearance-none 
+             [&::-webkit-inner-spin-button]:appearance-none" placeholder="Enter the deadline" value={gigData.gig.deliveryTime} name="deliveryTime" onChange={handleChange} type="number" />
           </div>
 
           {/* Image Upload Section */}
